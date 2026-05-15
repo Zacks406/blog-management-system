@@ -22,6 +22,35 @@ const registerUser = async (req, res) => {
     }
 };
 
+const loginUser = async (req, res) => {
+    try {
+        const { password, email } = req.body;
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(404).json({ Message: "User Not Found" })
+        };
+
+        const isMatch = await bcrypt.compare(password, user.password);
+
+        if (!isMatch) {
+            return res.status(400).json({ Message: "Invalid Credentials" });
+        };
+
+        res.status(200).json({
+            message: "User Login Successfull",
+            user: {
+                id: user._id,
+                password: user.password,
+                email: user.email
+            }
+        })
+
+    } catch (error) {
+        res.json({ Message: error.message });
+    }
+};
+
 module.exports = ({
-    registerUser
+    registerUser,
+    loginUser
 })
