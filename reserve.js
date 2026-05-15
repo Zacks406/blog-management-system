@@ -13,7 +13,7 @@ app.use(cors());
 app.use(express.json());
 
 app.get('/', (req, res) => {
-    res.send('App is working Correctly')
+    res.send('App is working Correctly');
 });
 
 
