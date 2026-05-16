@@ -22,35 +22,46 @@ const registerUser = async (req, res) => {
     }
 };
 
+const getUsers = async (req, res) => {
+    try {
+        const user = await User.find();
+        res.status(200).json(user);
+
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(500).json({ Message: error.message })
+    }
+};
+
 const loginUser = async (req, res) => {
     try {
         const { password, email } = req.body;
         const user = await User.findOne({ email });
+
         if (!user) {
-            return res.status(404).json({ Message: "User Not Found" })
+            return res.status(404).json({ Message: "Use not found" });
         };
 
         const isMatch = await bcrypt.compare(password, user.password);
 
         if (!isMatch) {
-            return res.status(400).json({ Message: "Invalid Credentials" });
+            return res.status(400).json({
+                Message: "Invalid credentials"
+            });
         };
 
-        res.status(200).json({
-            message: "User Login Successfull",
-            user: {
-                id: user._id,
-                password: user.password,
-                email: user.email
-            }
+        res.json({
+            id: user._id,
+            email: user.email,
+            password: user.password
         })
-
     } catch (error) {
-        res.json({ Message: error.message });
+        res.status(500).json({ Message: error.message })
     }
 };
 
 module.exports = ({
     registerUser,
-    loginUser
+    loginUser,
+    getUsers
 })
