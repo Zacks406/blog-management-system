@@ -1,17 +1,14 @@
 const jwt = require('jsonwebtoken');
 
-
-const protect = (req, res, next) => {
-
+const protect = async (req, res, next) => {
     try {
         const authHeader = req.headers.authorization;
 
         if (!authHeader) {
-            res.status(401).json({ Message: "Token not found" });
+            return res.status(401).json({ Message: "Header not found" });
         };
 
         const token = authHeader.split(" ")[1];
-
         const decode = jwt.verify(
             token,
             process.env.JWT_TOKEN
@@ -21,11 +18,12 @@ const protect = (req, res, next) => {
 
         next();
 
+
     } catch (error) {
         res.status(500).json({
-            Message: error.Message
+            Message: error.message
         });
     }
 };
 
-module.exports = { protect} ;
+module.exports = { protect }

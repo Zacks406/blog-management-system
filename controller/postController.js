@@ -5,10 +5,12 @@ const Post = require('../models/Post.js');
 
 const createPost = async (req, res) => {
     try {
+
+        const { title, content } = req.body;
         const post = new Post({
-            title: req.body.title,
-            content: req.body.content,
-            author: req.body.author
+            title,
+            content,
+            author: req.user.id
         });
 
         const savePost = await post.save();
@@ -20,7 +22,7 @@ const createPost = async (req, res) => {
 
 const getAllPost = async (req, res) => {
     try {
-        const posts = await Post.find();
+        posts = await Post.find().populate("author", "username email");
         res.status(200).json(posts)
     } catch (error) {
         res.status(500).json({ Message: error.message })

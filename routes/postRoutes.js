@@ -5,14 +5,16 @@ const {
     getSinglePost,
     deletPost,
     updatePost
-} = require('../controller/postController.js')
+} = require('../controller/postController.js');
+
+const { protect } = require('../midleware/authMidleware.js');
 
 const router = express.Router();
 
-router.post("/", createPost);
-router.get("/", getAllPost);
-router.get("/:id", getSinglePost);
-router.delete("/:id", deletPost);
-router.put("/:id", updatePost);
+router.post("/create", protect, createPost);
+router.get("/getall", getAllPost);
+router.get("/getsingle:id", getSinglePost);
+router.delete("/delete:id", deletPost);
+router.put("/update:id", updatePost);
 
 module.exports = router
