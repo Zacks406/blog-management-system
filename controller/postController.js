@@ -40,6 +40,37 @@ const getSinglePost = async (req, res) => {
 
 const updatePost = async (req, res) => {
     try {
+        const post = await Post.findById(req.params.id);
+
+        if (!post) {
+            return res.status(404).json({
+                Message: "Post not found"
+            });
+        };
+
+        if (post.author._id.toString() !== req.user.id) {
+            return res.status(403).json({ Message: "User not authorize" });
+        };
+        console.log(post.author._id.toString());
+
+        post.title = req.body.title || post.title,
+            post.content = req.body.content || post.content
+
+        const savePost = await post.save();
+
+        res.status(200).json({
+            Message: "Post updated successfully",
+            Post: savePost
+        });
+    } catch (error) {
+        res.status(500).json({
+            Message: error.message
+        });
+    }
+};
+
+/* const updatePost = async (req, res) => {
+    try {
         const updatedPost = await Post.findByIdAndUpdate(
             req.params.id,
             {
@@ -54,14 +85,41 @@ const updatePost = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
-};
+}; */
 
-const deletPost = async (req, res) => {
+/* const deletPost = async (req, res) => {
     try {
         const deletePost = await Post.findByIdAndDelete(req.params.id);
         res.status(200).json({ Message: "Post Deleted Successfully", Post: deletePost });
     } catch (error) {
         res.status(500).json({ message: error.message });
+    }
+}; */
+
+const deletPost = async (req, res) => {
+    try {
+        const post = await Post.findById(req.params.id);
+
+        if (!post) {
+            return res.status(404).json({ Message: "Post not found" });
+            console.log(post);
+        }
+        
+        if (post.author._id.toString() !== req.user.id) {
+            return res.status(403).json({ Message: "User not authorize" });
+        };
+
+        const deleteP = await post.deleteOne();
+
+        res.status(200).json({
+            Message: "Post deleted successfully",
+            Post: deleteP
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            Message: error.message
+        });
     }
 };
 
