@@ -22,7 +22,7 @@ const createPost = async (req, res) => {
 const getAllPost = async (req, res) => {
     try {
         posts = await Post.find().populate("author", "username email");
-        res.status(200).json(posts)
+        res.status(200).json(posts);
     } catch (error) {
         res.status(500).json({ Message: error.message })
     };
