@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const dns = require('node:dns').promises;
 const Post = require('./models/Post.js');
+const cors = require('cors')
 const postRoutes = require('./routes/postRoutes.js');
 const authRoutes = require('./routes/authRouts.js');
 
@@ -11,6 +12,7 @@ dns.setServers(["1.1.1.1", "1.0.0.1"]);
 const app = express();
 app.use(express.json());
 dotenv.config();
+app.use(cors());
 
 app.use("/api/posts", postRoutes);
 app.use("/api/users", authRoutes);
