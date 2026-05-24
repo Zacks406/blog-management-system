@@ -64,7 +64,7 @@ const updatePost = async (req, res) => {
         };
         console.log(post.author._id.toString());
 
-        post.title = req.body.title || post.title,
+            post.title = req.body.title || post.title,
             post.content = req.body.content || post.content
 
         const savePost = await post.save();

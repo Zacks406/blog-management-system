@@ -40,13 +40,11 @@ function CreatePost() {
                 onChange={(e) => { setTitle(e.target.value) }}
             />
             <br></br>
-
             <input
                 type="content"
                 placeholder="Content"
                 onChange={(e) => { setContent(e.target.value) }}
             />
-
             <br></br>
             <button type="submit">Submit</button>
         </form>
