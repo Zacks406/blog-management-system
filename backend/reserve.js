@@ -240,3 +240,75 @@ function Dashboard() {
 }
 
 export default Dashboard;
+
+
+
+
+import { useState, useEffect } from "react";
+import axios from "axios";
+
+function Dashboard() {
+
+    const [posts, setPosts] = useState([]);
+
+    useEffect(() => {
+        const fetchPosts = async () => {
+            const res = await axios.get("http://localhost:5000/api/posts");
+            setPosts(res.data);
+        };
+
+        fetchPosts();
+    }, []);
+
+    // 🧠 DELETE FUNCTION
+    const handleDelete = async (id) => {
+
+        try {
+            const token = localStorage.getItem("token");
+
+            await axios.delete(
+                `http://localhost:5000/api/posts/${id}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            );
+
+            // 🧠 update UI after delete
+            setPosts((prevPosts) =>
+                prevPosts.filter((post) => post._id !== id)
+            );
+
+            alert("Post deleted successfully");
+
+        } catch (error) {
+            console.log(error.response?.data || error.message);
+        }
+    };
+
+    return (
+        <div>
+
+            <h1>Dashboard</h1>
+
+            {posts.map((post) => (
+                <div key={post._id} style={{ border: "1px solid black", margin: "10px", padding: "10px" }}>
+
+                    <h3>{post.title}</h3>
+                    <p>{post.content}</p>
+
+                    <button onClick={() => handleDelete(post._id)}>
+                        Delete
+                    </button>
+
+                </div>
+            ))}
+
+        </div>
+    );
+}
+
+export default Dashboard;
+
+setPosts((prePosts) => prePosts.filter((post) => post._id !== id))
