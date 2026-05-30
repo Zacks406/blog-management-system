@@ -28,8 +28,6 @@ const getAllPost = async (req, res) => {
     };
 };
 
-
-
 const getSinglePost = async (req, res) => {
     try {
         const post = await Post.findById(req.params.id);
@@ -39,9 +37,7 @@ const getSinglePost = async (req, res) => {
             });
         };
 
-        res.status(200).json({
-            Post: post
-        });
+        res.status(200).json(post);
     } catch (error) {
         res.status(500).json({
             Message: error.message
@@ -64,7 +60,7 @@ const updatePost = async (req, res) => {
         };
         console.log(post.author._id.toString());
 
-            post.title = req.body.title || post.title,
+        post.title = req.body.title || post.title,
             post.content = req.body.content || post.content
 
         const savePost = await post.save();

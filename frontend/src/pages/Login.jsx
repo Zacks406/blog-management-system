@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
+
+    const navigate = useNavigate();
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -21,9 +24,11 @@ function Login() {
 
             localStorage.setItem(
                 'token',
-                res.data.jwt);
+                res.data.jwt
+            );
 
             alert("Login successfull");
+            navigate("/Dashboard")
 
 
         } catch (error) {

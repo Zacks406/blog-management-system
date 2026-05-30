@@ -26,9 +26,7 @@ function CreatePost() {
         console.log(res.data);
         alert("Post created successfully")
 
-        if (res.data) {
-            navigate('/Dashboard')
-        }
+        navigate('/Dashboard')
 
     };
 
@@ -40,8 +38,8 @@ function CreatePost() {
                 onChange={(e) => { setTitle(e.target.value) }}
             />
             <br></br>
-            <input
-                type="content"
+            <textarea
+                type="textarea"
                 placeholder="Content"
                 onChange={(e) => { setContent(e.target.value) }}
             />

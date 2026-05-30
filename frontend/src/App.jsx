@@ -11,6 +11,7 @@ import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import ProtectedRoute from './components/ProtectedRoute';
 import CreatePost from './pages/CreatePost';
+import EditPost from './pages/EditPost';
 
 function App() {
 
@@ -38,6 +39,10 @@ function App() {
         <Link to='/Create'>
           Create post
         </Link>
+
+        {/* <Link to='/:id'>
+          EditPost
+        </Link> */}
       </nav>
 
       <Routes>
@@ -67,6 +72,11 @@ function App() {
               <CreatePost />
             </ProtectedRoute>
           }
+        />
+
+        <Route
+          path='/EditPost/:id'
+          element={<EditPost />}
         />
 
       </Routes>

@@ -256,3 +256,186 @@ function App() {
 }
 
 export default App;
+
+
+
+
+import { useState, useEffect } from "react";
+import axios from "axios";
+
+function Dashboard() {
+
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      const res = await axios.get("http://localhost:5000/api/posts");
+      setPosts(res.data);
+    };
+
+    fetchPosts();
+  }, []);
+
+  // 🧠 DELETE FUNCTION
+  const handleDelete = async (id) => {
+
+    try {
+      const token = localStorage.getItem("token");
+
+      await axios.delete(
+        `http://localhost:5000/api/posts/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+
+      // 🧠 update UI after delete
+      setPosts((prevPosts) =>
+        prevPosts.filter((post) => post._id !== id)
+      );
+
+      alert("Post deleted successfully");
+
+    } catch (error) {
+      console.log(error.response?.data || error.message);
+    }
+  };
+
+  return (
+    <div>
+
+      <h1>Dashboard</h1>
+
+      {posts.map((post) => (
+        <div key={post._id} style={{ border: "1px solid black", margin: "10px", padding: "10px" }}>
+
+          <h3>{post.title}</h3>
+          <p>{post.content}</p>
+
+          <button onClick={() => handleDelete(post._id)}>
+            Delete
+          </button>
+
+        </div>
+      ))}
+
+    </div>
+  );
+}
+
+export default Dashboard;
+
+setPosts((prevPosts) => prevPosts.filter((post) => post._id !== id))
+
+
+
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { useNavigate, useParams } from "react-router-dom";
+
+function EditPost() {
+
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+
+  const navigate = useNavigate();
+
+  // 🧠 get ID from URL
+  const { id } = useParams();
+
+  // 🧠 fetch existing post
+  useEffect(() => {
+
+    const fetchPost = async () => {
+
+      try {
+
+        const res = await axios.get(
+          `http://localhost:5000/api/posts/${id}`
+        );
+
+        // 🧠 pre-fill form
+        setTitle(res.data.title);
+        setContent(res.data.content);
+
+      } catch (error) {
+
+        console.log(error.response?.data || error.message);
+
+      }
+    };
+
+    fetchPost();
+
+  }, [id]);
+
+  // 🧠 update function
+  const handleUpdate = async (e) => {
+
+    e.preventDefault();
+
+    try {
+
+      const token = localStorage.getItem("token");
+
+      await axios.put(
+        `http://localhost:5000/api/posts/${id}`,
+        {
+          title,
+          content
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
+
+      alert("Post updated successfully");
+
+      navigate("/dashboard");
+
+    } catch (error) {
+
+      console.log(error.response?.data || error.message);
+
+    }
+  };
+
+  return (
+    <div>
+
+      <h1>Edit Post</h1>
+
+      <form onSubmit={handleUpdate}>
+
+        <input
+          type="text"
+          value={title}
+          placeholder="Title"
+          onChange={(e) => setTitle(e.target.value)}
+        />
+
+        <br />
+
+        <textarea
+          value={content}
+          placeholder="Content"
+          onChange={(e) => setContent(e.target.value)}
+        />
+
+        <br />
+
+        <button type="submit">
+          Update Post
+        </button>
+
+      </form>
+
+    </div>
+  );
+}
+
+export default EditPost;

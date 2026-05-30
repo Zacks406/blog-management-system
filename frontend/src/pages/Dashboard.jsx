@@ -1,24 +1,26 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
+import Login from './Login';
 
 function Dashboard() {
 
     const [posts, setPosts] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
 
-        try {
-            const fetchPosts = async () => {
+        const fetchPosts = async () => {
+
+            try {
                 const res = await axios.get('http://localhost:5000/api/posts/getall');
                 setPosts(res.data)
-                // console.log(res.data)
+
+            } catch (error) {
+                console.log(error.message)
             }
-            fetchPosts()
-
-
-        } catch (error) {
-            console.log(error.message)
         }
+        fetchPosts();
 
     }, []);
 
@@ -44,6 +46,11 @@ function Dashboard() {
         }
     }
 
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        navigate("/Login")
+    }
+
     return (
         <div>
             <h2>Dashboard</h2>
@@ -55,12 +62,14 @@ function Dashboard() {
                         <div key={post._id} style={{ border: '1px solid black', margin: '5px', padding: '5px' }}>
                             <h5>{post.title}</h5>
                             <p>{post.content}</p>
+                            <Link to={`/EditPost/${post._id}`}>Edit</Link>
                             <button onClick={() => { handleDelete(post._id) }}>Delete</button>
                         </div>
 
                     ))
                 )
             }
+            <button onClick={handleLogout}>Logout</button>
         </div>
     )
 }
