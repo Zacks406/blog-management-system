@@ -2,8 +2,13 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import Login from './Login';
+import { useContext } from 'react';
+import AuthContex from '../contex/AuthContex';
 
 function Dashboard() {
+
+    const { logout } = useContext(AuthContex)
+    const { token } = useContext(AuthContex)
 
     const [posts, setPosts] = useState([]);
     const navigate = useNavigate();
@@ -26,7 +31,8 @@ function Dashboard() {
 
     const handleDelete = async (id) => {
 
-        const token = localStorage.getItem("token");
+        // const token = localStorage.getItem("token");
+        // const { token } = useContext(AuthContex)
         try {
 
             await axios.delete(`http://localhost:5000/api/posts/${id}`,
@@ -47,9 +53,11 @@ function Dashboard() {
     }
 
     const handleLogout = () => {
-        localStorage.removeItem("token");
+        //localStorage.removeItem("token");
+        logout
         navigate("/Login")
     }
+
 
     return (
         <div>

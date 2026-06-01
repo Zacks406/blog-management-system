@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
+import api from "../api/axios";
 
 function CreatePost() {
 
@@ -11,7 +12,8 @@ function CreatePost() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const res = await axios.post('http://localhost:5000/api/posts/create',
+        //  const res = await axios.post('http://localhost:5000/api/posts/create',
+        const res = await api.post("/posts/create",
             {
                 title,
                 content

@@ -46,7 +46,7 @@ function App() {
       </nav>
 
       <Routes>
-        <Route
+        {/*  <Route
           element={<Login />}
           path='/Login'
         />
@@ -77,8 +77,16 @@ function App() {
         <Route
           path='/EditPost/:id'
           element={<EditPost />}
-        />
+        /> */}
 
+        <Route path='/Login' element={<Login />} />
+        <Route path='/Register' element={<Register />} />
+
+        <Route element={<ProtectedRoute />}>
+          <Route path='/Dashboard' element={<Dashboard />} />
+          <Route path='/create' element={<CreatePost />} />
+          <Route path='/EditPost/:id' element={<EditPost />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );

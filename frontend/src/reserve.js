@@ -439,3 +439,152 @@ function EditPost() {
 }
 
 export default EditPost;
+
+
+import axios from "axios";
+
+const api = axios.create({
+  baseURL: "http://localhost:5000/api"
+});
+
+// INTERCEPTOR
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+
+  return config;
+});
+
+export default api;
+
+
+
+import { createContext, useState } from "react";
+
+const AuthContext = createContext();
+
+export function AuthProvider({ children }) {
+
+  const [token, setToken] = useState(
+    localStorage.getItem("token")
+  );
+
+  return (
+    <AuthContext.Provider
+      value={{
+        token,
+        setToken
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
+}
+
+export default AuthContext;
+
+
+import { createContext, useState } from "react";
+
+// 1. Create Context (empty container)
+const AuthContext = createContext();
+
+// 2. Provider component (shares data globally)
+export function AuthProvider({ children }) {
+
+  // 3. Create state for authentication
+  const [token, setToken] = useState(
+    localStorage.getItem("token")
+  );
+
+  // 4. Function to login user
+  const login = (newToken) => {
+    localStorage.setItem("token", newToken);
+    setToken(newToken);
+  };
+
+  // 5. Function to logout user
+  const logout = () => {
+    localStorage.removeItem("token");
+    setToken(null);
+  };
+
+  return (
+    <AuthContext.Provider
+      value={{
+        token,
+        setToken,
+        login,
+        logout
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
+}
+
+export default AuthContext;
+
+
+import { useContext, useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import AuthContext from "../context/AuthContext";
+
+function Login() {
+
+  const { login } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const [formData, setFormData] = useState({
+    email: "",
+    password: ""
+  });
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const response = await axios.post(
+      "http://localhost:5000/api/login",
+      formData
+    );
+
+    // 🔥 IMPORTANT PART
+    login(response.data.token);
+
+    navigate("/dashboard");
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        name="email"
+        onChange={handleChange}
+        placeholder="Email"
+      />
+
+      <input
+        name="password"
+        type="password"
+        onChange={handleChange}
+        placeholder="Password"
+      />
+
+      <button type="submit">
+        Login
+      </button>
+    </form>
+  );
+}
+
+export default Login;

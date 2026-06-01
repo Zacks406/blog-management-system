@@ -1,12 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import AuthContex from "../contex/AuthContex";
 
 function EditPost() {
     const navigate = useNavigate()
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("")
-    const token = localStorage.getItem("token");
+    //const token = localStorage.getItem("token");
+    const { token } = useContext(AuthContex)
     const { id } = useParams();
 
     useEffect(() => {
