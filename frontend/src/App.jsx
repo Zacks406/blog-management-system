@@ -10,8 +10,10 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import ProtectedRoute from './components/ProtectedRoute';
+import AdminRoute from './components/AdminRoute'
 import CreatePost from './pages/CreatePost';
 import EditPost from './pages/EditPost';
+import AdminDashboard from './pages/AdminDashboard'
 
 function App() {
 
@@ -43,6 +45,10 @@ function App() {
         {/* <Link to='/:id'>
           EditPost
         </Link> */}
+
+        <Link to='/AdminDashboard'>
+          Admin Dashboard
+        </Link>
       </nav>
 
       <Routes>
@@ -81,6 +87,12 @@ function App() {
 
         <Route path='/Login' element={<Login />} />
         <Route path='/Register' element={<Register />} />
+
+        <Route element={<AdminRoute />}>
+          <Route
+            path='/AdminDashboard' element={<AdminDashboard />}
+          />
+        </Route>
 
         <Route element={<ProtectedRoute />}>
           <Route path='/Dashboard' element={<Dashboard />} />

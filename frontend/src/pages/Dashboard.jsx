@@ -8,7 +8,7 @@ import AuthContex from '../contex/AuthContex';
 function Dashboard() {
 
     const { logout } = useContext(AuthContex)
-    const { token } = useContext(AuthContex)
+    const { token, user } = useContext(AuthContex)
 
     const [posts, setPosts] = useState([]);
     const navigate = useNavigate();
@@ -70,8 +70,12 @@ function Dashboard() {
                         <div key={post._id} style={{ border: '1px solid black', margin: '5px', padding: '5px' }}>
                             <h5>{post.title}</h5>
                             <p>{post.content}</p>
-                            <Link to={`/EditPost/${post._id}`}>Edit</Link>
-                            <button onClick={() => { handleDelete(post._id) }}>Delete</button>
+                            {
+                                user?.role == "admin" && (<Link to={`/EditPost/${post._id}`}>Edit</Link>)
+                            }
+                            {
+                                user?.role == "admin" && (<button onClick={() => { handleDelete(post._id) }}>Delete</button>)
+                            }
                         </div>
 
                     ))

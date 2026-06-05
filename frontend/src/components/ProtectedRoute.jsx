@@ -1,4 +1,7 @@
 import { Navigate, Outlet } from 'react-router-dom'
+import { useContext } from 'react';
+import AuthContex from '../contex/AuthContex';
+import { AuthProvider } from '../contex/AuthContex';
 
 /* function ProtectedRoute({ children }) {
 
@@ -13,7 +16,8 @@ import { Navigate, Outlet } from 'react-router-dom'
 
 function ProtectedRoute() {
 
-    const token = localStorage.getItem('token');
+    //const token = localStorage.getItem('token');
+    const { token } = useContext(AuthContex)
 
     return token ?
         <Outlet />

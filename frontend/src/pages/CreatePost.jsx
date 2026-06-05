@@ -25,7 +25,7 @@ function CreatePost() {
             }
         );
 
-        console.log(res.data);
+        //console.log(res.data);
         alert("Post created successfully")
 
         navigate('/Dashboard')

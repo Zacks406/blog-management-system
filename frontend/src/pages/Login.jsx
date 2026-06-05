@@ -7,7 +7,7 @@ import AuthContex from '../contex/AuthContex';
 
 function Login() {
 
-    const { login } = useContext(AuthContex)
+    const { token, login } = useContext(AuthContex)
 
     const navigate = useNavigate();
 
@@ -28,15 +28,22 @@ function Login() {
             );
 
 
-            //console.log(res.data)
+           // console.log(res.data)
+            //console.log(res.data.user.role)
+            //console.log(res.data.user.email)
+
 
             /*   localStorage.setItem(
                   'token',
                   res.data.jwt
               ); */
 
-            login(res.data.jwt)
-
+            login(
+                res.data.jwt,
+                res.data.user
+            )
+            //console.log(res.data.jwt)
+            //console.log(res.data.role)
             alert("Login successfull");
             navigate("/Dashboard")
 
