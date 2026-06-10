@@ -4,11 +4,14 @@ import { Link, Navigate, useNavigate } from 'react-router-dom';
 import Login from './Login';
 import { useContext } from 'react';
 import AuthContex from '../contex/AuthContex';
+import useAuth from '../hooks/useAuth';
+import api from '../api/axios'
 
 function Dashboard() {
 
-    const { logout } = useContext(AuthContex)
-    const { token, user } = useContext(AuthContex)
+    //const { logout } = useContext(AuthContex)
+    //const { token, user } = useContext(AuthContex)
+    const { token, user, logout } = useAuth();
 
     const [posts, setPosts] = useState([]);
     const navigate = useNavigate();
@@ -18,7 +21,8 @@ function Dashboard() {
         const fetchPosts = async () => {
 
             try {
-                const res = await axios.get('http://localhost:5000/api/posts/getall');
+                // const res = await axios.get('http://localhost:5000/api/posts/getall');
+                const res = await api.get('posts/getall');
                 setPosts(res.data)
 
             } catch (error) {
@@ -71,10 +75,12 @@ function Dashboard() {
                             <h5>{post.title}</h5>
                             <p>{post.content}</p>
                             {
-                                user?.role == "admin" && (<Link to={`/EditPost/${post._id}`}>Edit</Link>)
+                                user?.role == "admin" &&
+                                (<Link to={`/EditPost/${post._id}`}>Edit</Link>)
                             }
                             {
-                                user?.role == "admin" && (<button onClick={() => { handleDelete(post._id) }}>Delete</button>)
+                                user?.role == "admin" &&
+                                (<button onClick={() => { handleDelete(post._id) }}>Delete</button>)
                             }
                         </div>
 

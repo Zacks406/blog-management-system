@@ -6,18 +6,24 @@ import api from "../api/axios";
 function CreatePost() {
 
     const token = localStorage.getItem('token');
-    const [title, setTitle] = useState('');
-    const [content, setContent] = useState('');
+    // const [title, setTitle] = useState('');
+    // const [content, setContent] = useState('');
+    const [formData, setFormData] = useState({
+        "title": "",
+        "content": ""
+    })
     const navigate = useNavigate();
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         //  const res = await axios.post('http://localhost:5000/api/posts/create',
         const res = await api.post("/posts/create",
-            {
-                title,
-                content
-            },
+            /*  {
+                 title,
+                 content
+             }, */
+            formData,
             {
                 headers: {
                     'Authorization': `Bearer ${token}`
@@ -32,18 +38,33 @@ function CreatePost() {
 
     };
 
+    const handleChange = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+        })
+
+    }
+
     return (
         <form onSubmit={handleSubmit}>
             <input
-                type="title"
+                type="text"
+                name="title"
                 placeholder="Title"
-                onChange={(e) => { setTitle(e.target.value) }}
+                value={formData.title}
+                //onChange={(e) => { setTitle(e.target.value) }}
+                onChange={handleChange}
+
             />
             <br></br>
             <textarea
-                type="textarea"
+                //type="textarea"
+                name="content"
+                value={formData.content}
                 placeholder="Content"
-                onChange={(e) => { setContent(e.target.value) }}
+                //onChange={(e) => { setContent(e.target.value) }}
+                onChange={handleChange}
             />
             <br></br>
             <button type="submit">Submit</button>
