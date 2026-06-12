@@ -5,6 +5,7 @@ import api from '../api/axios';
 import { useContext } from 'react';
 import AuthContex from '../contex/AuthContex';
 import useAuth from '../hooks/useAuth';
+import { useReducer } from 'react';
 
 function Login() {
 
@@ -12,13 +13,20 @@ function Login() {
     const { token, login } = useAuth()
     const navigate = useNavigate();
 
+
+
     // const [email, setEmail] = useState("");
     //const [password, setPassword] = useState("");
 
-    const [formData, setFormData] = useState({
-        "email": "",
-        "password": ""
-    })
+    /*  const [formData, setFormData] = useState({
+         "email": "",
+         "password": ""
+     }) */
+
+    const initialState = {
+        email: "",
+        password: ""
+    }
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -32,7 +40,8 @@ function Login() {
                     password
                 } */
 
-                formData
+                //formData
+                state
             );
 
 
@@ -70,7 +79,29 @@ function Login() {
         })
     }
 
+    function reducer(state, action) {
+
+        switch (action.type) {
+            case "setEmail":
+                return {
+                    ...state,
+                    email: action.payload
+                }
+
+            case "setPassword":
+                return {
+                    ...state,
+                    password: action.payload
+                }
+            default: return state
+
+        }
+    }
+    const [state, dispatch] = useReducer(reducer, initialState);
     return (
+
+
+
         <div>
             <h2>Login page</h2>
 
@@ -79,9 +110,16 @@ function Login() {
                     name='email'
                     type='email'
                     placeholder='email'
-                    value={formData.email}
+                    // value={formData.email}
+                    value={state.email}
                     //onChange={(e) => { setEmail(e.target.value) }}
-                    onChange={handleChange}
+                    //onChange={handleChange}
+                    onChange={(e) => {
+                        dispatch({
+                            type: "setEmail",
+                            payload: e.target.value
+                        })
+                    }}
 
                 />
                 <br></br>
@@ -90,8 +128,15 @@ function Login() {
                     type='password'
                     placeholder='password'
                     //onChange={(e) => { setPassword(e.target.value) }}
-                    value={formData.password}
-                    onChange={handleChange}
+                    //value={formData.password}
+                    value={state.password}
+                    //onChange={handleChange}
+                    onChange={(e) => {
+                        dispatch({
+                            type: "setPassword",
+                            payload: e.target.value
+                        })
+                    }}
                 />
                 <br></br>
                 <button type='submit'>Login</button>
