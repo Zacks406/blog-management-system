@@ -12,9 +12,7 @@ function Login() {
     //const { token, login } = useContext(AuthContex)
     const { token, login } = useAuth()
     const navigate = useNavigate();
-
-
-
+    const [error, setError] = useState("")
     // const [email, setEmail] = useState("");
     //const [password, setPassword] = useState("");
 
@@ -30,7 +28,25 @@ function Login() {
 
     const handleLogin = async (e) => {
         e.preventDefault();
+        setError("")
 
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+        if (!state.email || !state.password) {
+            //alert("All fields are required")
+            setError("All fields are required")
+            return;
+        }
+
+        if (!emailRegex.test(state.email)) {
+            setError("Email does not match")
+            return;
+        }
+
+        if (state.password.length < 4) {
+            setError("Password must be at least 4 characters")
+            return;
+        }
 
         try {
             // const res = await axios.post('http://localhost:5000/api/users/login',
@@ -48,6 +64,7 @@ function Login() {
             // console.log(res.data)
             //console.log(res.data.user.role)
             //console.log(res.data.user.email)
+            console.log(state.email)
 
 
             /*   localStorage.setItem(
@@ -67,6 +84,7 @@ function Login() {
 
         } catch (error) {
             console.log(error.message)
+            setError("Login failed")
         };
 
     };
@@ -105,6 +123,9 @@ function Login() {
         <div>
             <h2>Login page</h2>
 
+            {
+                error && <p style={{ color: "red"}}>{error}</p>
+            }
             <form onSubmit={handleLogin}>
                 <input
                     name='email'
@@ -139,7 +160,7 @@ function Login() {
                     }}
                 />
                 <br></br>
-                <button type='submit'>Login</button>
+                <button type='submit' >Login</button>
             </form>
         </div>
     );
@@ -147,3 +168,9 @@ function Login() {
 };
 
 export default Login;
+
+
+//disabled={!state.email || !state.password}
+
+//const passwordRegex =
+//  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;

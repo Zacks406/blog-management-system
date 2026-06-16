@@ -37,6 +37,21 @@ const getUsers = async (req, res) => {
 const loginUser = async (req, res) => {
     try {
         const { password, email } = req.body;
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!email || !password) {
+            return res.status(400).json({
+                Message: "All fields must be filled"
+            })
+        }
+
+        if (!emailRegex.test(email)) {
+            return res.status(400).json({
+                Message: "Email format not allowed"
+            })
+        }
+
         const user = await User.findOne({ email });
 
         if (!user) {
@@ -69,7 +84,7 @@ const loginUser = async (req, res) => {
 
         })
 
-         console.log(user.role)
+        // console.log(user.role)
     } catch (error) {
         res.status(500).json({ Message: error.message })
     }

@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import AuthContex from "../contex/AuthContex";
+import api from "../api/axios";
 
 function EditPost() {
     const navigate = useNavigate()
@@ -28,17 +29,17 @@ function EditPost() {
 
     const handleUpdate = async () => {
 
-        const res = await axios.put(`http://localhost:5000/api/posts/${id}`,
-
+        // const res = await axios.put(`http://localhost:5000/api/posts/${id}`,
+        await api.put('posts/${id}',
             {
                 title,
                 content
             },
-            {
+            /* {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
-            }
+            } */
         )
 
         navigate("/Dashboard")

@@ -243,3 +243,68 @@ export default Dashboard;
 
 
 
+const storage = multer.diskStorage(
+    {
+        destination: (req, file, cd) => {
+            cd(null,
+                "/upload"
+            )
+        }
+    },
+
+    {
+        fileName: (req, file, cd) => {
+            cd(
+                null,
+                Date.now() + "_" + file.originalname
+            )
+        }
+    }
+)
+
+function uplodPhoto() {
+
+    const [image, setImage] = useState(null);
+    const [message, setMessage] = useState("");
+
+    const handleChange = (e) => {
+        setImage(e.target.file[0]);
+    }
+
+    const handleUpload = () => {
+
+        const formData = new FormData();
+        formData.append("profilePic", image);
+
+        if (!image) {
+            alert("Selet an image")
+            return
+        }
+
+        try {
+            const res = await api.post("/upload",
+                formData
+            )
+
+            console.log(res.data.message)
+        } catch (error) {
+            console.log("Fail to upload")
+        }
+    }
+
+    return (
+        <div>
+            <h1>Upload your profile picture</h1>
+
+            <div>
+
+                <input
+                    type="file"
+                    onChange={handleChange}
+                />
+
+                <button onClick={handleUpload}>Upload</button>
+            </div>
+        </div>
+    )
+}

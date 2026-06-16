@@ -39,12 +39,13 @@ function Dashboard() {
         // const { token } = useContext(AuthContex)
         try {
 
-            await axios.delete(`http://localhost:5000/api/posts/${id}`,
-                {
+            //  await axios.delete(`http://localhost:5000/api/posts/${id}`,
+            await api.delete('posts/${id}',
+                /* {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
-                }
+                } */
             );
 
             setPosts((prevPosts) => prevPosts.filter((post) => post._id !== id));
