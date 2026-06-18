@@ -14,6 +14,7 @@ import AdminRoute from './components/AdminRoute'
 import CreatePost from './pages/CreatePost';
 import EditPost from './pages/EditPost';
 import AdminDashboard from './pages/AdminDashboard'
+import UploadProfilePhoto from './pages/UploadProfilePic';
 
 function App() {
 
@@ -45,9 +46,14 @@ function App() {
         {/* <Link to='/:id'>
           EditPost
         </Link> */}
+        {'|'}
 
         <Link to='/AdminDashboard'>
           Admin Dashboard
+        </Link>
+        {'|'}
+        <Link to='UploadProfilePhoto'>
+          UploadPhoto
         </Link>
       </nav>
 
@@ -87,6 +93,7 @@ function App() {
 
         <Route path='/Login' element={<Login />} />
         <Route path='/Register' element={<Register />} />
+        <Route path='/UploadProfilePhoto' element={<UploadProfilePhoto />} />
 
         <Route element={<AdminRoute />}>
           <Route

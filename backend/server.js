@@ -6,6 +6,7 @@ const Post = require('./models/Post.js');
 const cors = require('cors')
 const postRoutes = require('./routes/postRoutes.js');
 const authRoutes = require('./routes/authRouts.js');
+const uploadRoute = require('./routes/uploadRoute.js')
 
 dns.setServers(["1.1.1.1", "1.0.0.1"]);
 
@@ -16,6 +17,7 @@ app.use(cors());
 
 app.use("/api/posts", postRoutes);
 app.use("/api/users", authRoutes);
+app.use("/api/upload", uploadRoute);
 
 const connectDB = async () => {
     try {

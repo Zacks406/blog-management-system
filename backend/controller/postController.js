@@ -86,7 +86,7 @@ const deletPost = async (req, res) => {
         }
 
         if (post.author._id.toString() !== req.user.id) {
-            return res.status(401).json({ Message: "User not authorize" });
+            return res.status(401).json({ Message: "User not authorizeed" });
         };
 
         const deleteP = await post.deleteOne();

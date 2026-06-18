@@ -28,7 +28,7 @@ function Register() {
             <form onSubmit={handleRegister}>
                 <input
                     type="username"
-                    placeholder="Username"
+                    placeholder="Username testing"
                     onChange={(e) => { setUsername(e.target.value) }}
                 />
                 <br></br>
@@ -44,7 +44,7 @@ function Register() {
                     onChange={(e) => { setEmail(e.target.value) }}
                 />
                 <br></br>
-                <button type="submit">Submit</button>
+                <button type="submit" style={{ color: "white", backgroundColor: "red", fontFamily: "sans-serif", border: "2px solid blue", borderRadius: "3px"  }}>Submit</button>
             </form>
         </div>
     );
