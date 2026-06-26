@@ -7,7 +7,7 @@ const {
     updatePost
 } = require('../controller/postController.js');
 
-const { protect } = require('../midleware/authMidleware.js');
+const { protect } = require('../middleware/authMidleware.js');
 
 const router = express.Router();
 

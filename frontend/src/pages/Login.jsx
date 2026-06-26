@@ -121,7 +121,7 @@ function Login() {
 
 
         <div>
-            <h2>Login page</h2>
+            <h2 className = "text-3xl font-bold underline">Login page</h2>
 
             {
                 error && <p style={{ color: "red"}}>{error}</p>

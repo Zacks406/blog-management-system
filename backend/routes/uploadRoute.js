@@ -1,6 +1,6 @@
 
 const express = require('express');
-const upload = require('../midleware/upload.js');
+const upload = require('../middleware/upload.js');
 const { uploadImage } = require('../controller/uploadController.js')
 
 

@@ -308,3 +308,33 @@ function uplodPhoto() {
         </div>
     )
 }
+
+import {defineConfig} from 'vite'
+import tailwindcss from '@tailwindcss/vite'
+
+export default defineConfig(
+    plugins[
+        tailwindcss
+    ]
+)
+
+
+
+
+const multer = require('multer')
+
+const storage = multer.diskStorage({
+
+    destination: function (req, file, cb) {
+        cb(null, "uploads/")
+    },
+
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + "_" + file.originalname)
+    }
+
+})
+
+const upload = multer({ storage })
+
+module.exports = upload

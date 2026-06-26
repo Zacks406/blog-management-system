@@ -6,6 +6,7 @@ import { useContext } from 'react';
 import AuthContex from '../contex/AuthContex';
 import useAuth from '../hooks/useAuth';
 import api from '../api/axios'
+import Button from '../components/Button';
 
 function Dashboard() {
 
@@ -40,7 +41,7 @@ function Dashboard() {
         try {
 
             //  await axios.delete(`http://localhost:5000/api/posts/${id}`,
-            await api.delete('posts/${id}',
+            await api.delete(`posts/${id}`,
                 /* {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -59,36 +60,63 @@ function Dashboard() {
 
     const handleLogout = () => {
         //localStorage.removeItem("token");
-        logout
+        logout()
         navigate("/Login")
     }
 
 
     return (
-        <div>
-            <h2>Dashboard</h2>
-            {
-                posts.length == 0 ? (
-                    <p>Posts not found</p>
-                ) : (
-                    posts.map((post) => (
-                        <div key={post._id} style={{ border: '1px solid black', margin: '5px', padding: '5px' }}>
-                            <h5>{post.title}</h5>
-                            <p>{post.content}</p>
-                            {
-                                user?.role == "admin" &&
-                                (<Link to={`/EditPost/${post._id}`}>Edit</Link>)
-                            }
-                            {
-                                user?.role == "admin" &&
-                                (<button onClick={() => { handleDelete(post._id) }}>Delete</button>)
-                            }
-                        </div>
+        <div className="min-h-screen bg-orange-100 p-6">
+            <div className='flex justify-between items-center mb-6'>
+                <h2 className='text-3xl font-bold mb-6'>Dashboard</h2>
+                <p className='text-gray-600'>Welcome, {user?.email}</p>
+               {/*  <button
+                    className='bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-700'
+                    onClick={handleLogout}>
+                    Logout
+                </button> */}
 
-                    ))
-                )
-            }
-            <button onClick={handleLogout}>Logout</button>
+                 <Button
+                    onClick={handleLogout}
+                    text="Logout"
+                    variant="blue"
+                /> 
+
+            </div>
+
+            <div className='grid md:grid-cols-2 lg:grid-cols-3 gap-3'>
+                {
+                    posts.length == 0 ? (
+                        <p className='text-gray-600'>Posts not found</p>
+                    ) : (
+                        posts.map((post) => (
+                            <div key={post._id} className='bg-white  p-4 rounded shadow hover:shadow-md transition'>
+                                <h5 className='text-xl font-semibold mb-0 px-2'>{post.title}</h5>
+                                <p className='text-gray-700 mb-2 px-2'>{post.content}</p>
+                                <div className='flex gap-3'>
+                                    {
+                                        user?.role == "admin" &&
+                                        (<Link className=' bg-blue-500 hover:bg-blue-600 my-2 mx-2 text-white rounded px-2' to={`/EditPost/${post._id}`}>Edit</Link>)
+                                    }
+                                    {
+                                        user?.role == "admin" &&
+                                       /*  (<button className=' bg-red-500 hover:bg-red-600  my-2 text-white rounded px-2' onClick={() => { handleDelete(post._id) }}>Delete</button>) */
+                                         (
+                                             <Button
+                                                 text="Delete"
+                                                 variant='red'
+                                                 onClick={() => handleDelete(post._id)}
+                                             />
+                                         ) 
+                                    }
+                                </div>
+                            </div>
+
+                        ))
+                    )
+                }
+            </div>
+
         </div>
     )
 }
